@@ -1,130 +1,72 @@
-# FruitNinja AI Bot
+# FruitNinja-AIBot
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-
----
+![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
+![Ultralytics](https://img.shields.io/badge/Ultralytics-000000?style=for-the-badge&logo=ultralytics&logoColor=white)
 
 ## Overview
 
-**FruitNinja AI Bot** is an automated system designed to play the popular *Fruit Ninja* game using artificial intelligence and computer vision.  
-The bot detects fruits on the screen, tracks their motion, and performs swipe gestures programmatically to maximize the score—mimicking human gameplay with precision.
-
----
+This project is an AI-powered bot designed to play the game Fruit Ninja. It utilizes real-time object detection through a YOLOv8 model to identify fruits and bombs on the screen. The bot automates mouse movements to slice fruits while implementing sophisticated logic to avoid bombs and ensure the slicing path is safe.
 
 ## Features
 
-- Real-time screen capture and fruit detection  
-- Object recognition using trained AI model  
-- Automated mouse gestures for slicing fruits  
-- Adjustable speed and accuracy for testing  
-- Modular, easy-to-modify Python codebase  
+* **Real-time Object Detection**: Employs a YOLOv8 model (`v8n-pokidata.pt`) to detect various fruits and bombs in real-time.
+* **Intelligent Bomb Avoidance**: Creates a configurable safety margin around detected bombs and prevents the cursor from entering these zones.
+* **Safe Path-finding**: Before moving to a fruit, the bot checks if the straight-line path from the current cursor position to the target is clear of any bomb "danger zones".
+* **Cursor Safety**: If the cursor finds itself within a bomb's danger zone, it automatically retreats to a predefined safe position.
+* **Target Prioritization**: Identifies the closest, path-safe fruit to maximize slicing efficiency.
+* **Hardware Acceleration**: Automatically detects and utilizes NVIDIA (CUDA) or AMD (DirectML) GPUs via PyTorch, with a fallback to CPU if no compatible GPU is found.
+* **Visual Debugging**: Provides a live OpenCV window (`Fruit Ninja Detection`) showing the game capture with detection boxes and FPS.
+* **Easy Configuration**: A helper script (`window-size.py`) is included to visually select and configure the game's screen region.
 
----
+## Dependencies
 
-## Tech Stack
+The script requires the following Python libraries:
 
-- **Programming Language:** Python  
-- **Core Libraries:** OpenCV, NumPy, PyTorch  
-- **Automation:** PyAutoGUI (for mouse control)  
-- **Model Type:** YOLO or CNN-based object detector  
+* `opencv-python`
+* `numpy`
+* `mss`
+* `pyautogui`
+* `ultralytics`
+* `torch`
+* `keyboard`
+* `torch_directml` (Optional, for AMD GPU acceleration)
 
----
+You can install the primary dependencies using pip:
+```bash
+pip install opencv-python numpy mss pyautogui ultralytics torch keyboard
 
-## Project Structure
+## Setup and Configuration
 
-```
+1.  **Install Dependencies**: Run the pip install command listed above.
+2.  **Configure Game Region**:
+      * Before running the main bot, you must define the area of your screen where the game is played.
+      * Run the `window-size.py` script:
+        ```bash
+        python window-size.py
+        ```
+      * A full-screen screenshot will appear. Click and drag a box around the active game area (where fruits appear).
+      * Press `ENTER` to confirm your selection.
+      * The script will print a `MONITOR_REGION` dictionary to your console.
+      * Copy this dictionary and paste it into `final-path.py`, replacing the existing `MONITOR_REGION` variable.
+3.  **Model File**: Ensure the `v8n-pokidata.pt` model file is located in the same directory as `final-path.py`, or update the `MODEL_PATH` variable in the script to point to its location.
 
-FruitNinja-AIBot/
-│
-├── model/               # Trained AI model weights
-├── data/                # Sample game frames or datasets
-├── src/                 # Core Python source code
-│   ├── capture.py       # Screen capture and preprocessing
-│   ├── detect.py        # Fruit detection logic
-│   ├── action.py        # Swipe and interaction functions
-│   └── main.py          # Entry point for the AI bot
-│
-├── requirements.txt     # Python dependencies
-├── README.md            # Project documentation
-└── LICENSE              # License information
+## How to Use
 
-````
-
----
-
-## Installation
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/FruitNinja-AIBot.git
-   cd FruitNinja-AIBot
-
-
-2. Install the required dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. Place your trained model file (e.g., `best.pt`) in the `model/` directory.
-
----
-
-## Usage
-
-1. Launch the Fruit Ninja game (windowed mode recommended).
-2. Run the AI bot:
-
-   ```bash
-   python src/main.py
-   ```
-3. The bot will automatically detect fruits and simulate slicing actions in real time.
-
----
-
-## Configuration
-
-You can modify parameters such as:
-
-* Screen region for capture
-* Detection confidence threshold
-* Swipe speed and angle
-
-All configuration options are located in the `config.py` file (if available).
-
----
-
-## Results
-
-* Average reaction time: ~50–100 ms per detection
-* High accuracy fruit detection using trained AI model
-* Smooth automation of swipe gestures
-
-*(Add screenshots or GIFs showing the bot in action here)*
-
----
-
-## Contributing
-
-Contributions are welcome.
-
-1. Fork the project
-2. Create a new branch
-3. Submit a pull request with detailed changes
-
----
+1.  Complete the **Setup and Configuration** steps.
+2.  Open and run your Fruit Ninja game in the region you defined.
+3.  Run the main bot script:
+    ```bash
+    python final-path.py
+    ```
+4.  The bot will initialize, print the device it is using (e.g., `cuda`, `cpu`), and hold down the left mouse button to begin slicing.
+5.  A window titled 'Fruit Ninja Detection' will appear, showing the bot's view.
+6.  To stop the bot at any time, press the **ESC** key.
 
 ## License
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
----
-
-## Acknowledgements
-
-* Inspired by the *Fruit Ninja* game by Halfbrick Studios
-* Uses open-source computer vision and automation frameworks
+```
+```
