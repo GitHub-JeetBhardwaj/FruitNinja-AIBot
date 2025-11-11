@@ -36,7 +36,7 @@ The script requires the following Python libraries:
 You can install the primary dependencies using pip:
 ```bash
 pip install opencv-python numpy mss pyautogui ultralytics torch keyboard
-
+```
 ## Setup and Configuration
 
 1.  **Install Dependencies**: Run the pip install command listed above.
@@ -67,6 +67,3 @@ pip install opencv-python numpy mss pyautogui ultralytics torch keyboard
 ## License
 
 This project is licensed under the MIT License.
-
-```
-```
